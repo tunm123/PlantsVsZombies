@@ -16,10 +16,15 @@ import org.cocos2d.types.CGPoint;
 import org.cocos2d.types.util.CGPointUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import top.tunm.xmut.tunmpvz.effect.AEffect;
 
+
+// 僵尸类
+// 包含普通僵尸、路障僵尸和水桶僵尸
 
 public class Zombie extends CCSprite {
     private final CGPoint end;
@@ -30,18 +35,54 @@ public class Zombie extends CCSprite {
     private State state;
     private boolean isSlow;
 
+    private String stand = ToolsSet.zombieStand;
+    private String move = ToolsSet.zombieMove;
+    private int moveInt = ToolsSet.zombieMoveInt;
+    private String attacka = ToolsSet.zombieAttack;
+    private int attackInt = ToolsSet.zombieAttackInt;
+
+
+    // 变成普通僵尸的标志
+    private boolean isN = true;
 
     public enum State{
         MOVE,ATTACK
     }
     public Zombie (CombatLayer combatLayer, CGPoint start, CGPoint end) {
-        super("zombies/zombies_1/walk/Frame00.png");
+        super(ToolsSet.zombieStand);
         setAnchorPoint(0.5f, 0);
         setPosition(start);
         this.combatLayer = combatLayer;
         this.end = end;
         move();
     }
+
+    public Zombie (CombatLayer combatLayer, CGPoint start, CGPoint end,int HP) {
+        super(ToolsSet.zombieStand);
+        setAnchorPoint(0.5f, 0);
+        setPosition(start);
+        this.combatLayer = combatLayer;
+        this.end = end;
+        // 水桶僵尸
+        if (HP==600){
+            isN = false;
+            setHP(600);
+            move = ToolsSet.bucketheadZombieMove;
+            attacka = ToolsSet.bucketheadZombieAttack;
+            moveInt = ToolsSet.bucketheadZombieInt;
+            attackInt = ToolsSet.bucketheadZombieAttackInt;
+        }else {
+            isN = false;
+            setHP(300);
+            move = ToolsSet.coneheadZombieMove;
+            attacka = ToolsSet.coneheadZombieAttack;
+            moveInt = ToolsSet.coneheadZombieInt;
+            attackInt = ToolsSet.coneheadZombieAttackInt;
+        }
+        move();
+    }
+
+
     public void move(){
         float t= CGPointUtil.distance(getPosition(),end)/speed;
         CCMoveTo ccMoveTo= CCMoveTo.action(t,end);
@@ -54,9 +95,9 @@ public class Zombie extends CCSprite {
             runAction(ccSequence);
         }
         ArrayList<CCSpriteFrame> frames=new ArrayList<>();
-        for (int i = 0; i < 22; i++) {
+        for (int i = 0; i < moveInt; i++) {
             CCSpriteFrame ccSpriteFrame= CCSprite.sprite(String.format(Locale.CHINA,
-                    "zombies/zombies_1/walk/Frame%02d.png",i)).displayedFrame();
+                    move,i)).displayedFrame();
             frames.add(ccSpriteFrame);
         }
         CCAnimation ccAnimation= CCAnimation.animationWithFrames(frames,0.1f);
@@ -73,9 +114,9 @@ public class Zombie extends CCSprite {
 
     public void attack(){
         ArrayList<CCSpriteFrame> frames=new ArrayList<>();
-        for (int i = 0; i < 21; i++) {
+        for (int i = 0; i < attackInt; i++) {
             CCSpriteFrame ccSpriteFrame= CCSprite.sprite(String.format(Locale.CHINA,
-                    "zombies/zombies_1/attack/Frame%02d.png",i)).displayedFrame();
+                    attacka,i)).displayedFrame();
             frames.add(ccSpriteFrame);
         }
         CCAnimation ccAnimation= CCAnimation.animationWithFrames(frames,0.1f);
@@ -157,6 +198,17 @@ public class Zombie extends CCSprite {
         if (HP<0){
             HP=0;
         }
+
+        if (!isN){
+            if (HP<=100){
+                move = ToolsSet.zombieMove;
+                attacka = ToolsSet.zombieAttack;
+                moveInt = ToolsSet.zombieMoveInt;
+                attackInt = ToolsSet.zombieAttackInt;
+                move();
+            }
+        }
+
     }
 
     public void slow(){
@@ -170,6 +222,8 @@ public class Zombie extends CCSprite {
             case ATTACK:
                 attack();
                 break;
+            default:
+                break;
         }
         CCTintTo ccTintTo1=CCTintTo.action(0.1f,ccc3(150,150,255));
         CCDelayTime ccDelayTime=CCDelayTime.action(3);
@@ -178,6 +232,23 @@ public class Zombie extends CCSprite {
         CCSequence ccSequence=CCSequence.actions(ccTintTo1,ccDelayTime,ccTintTo2,ccCallFunc);
         runAction(ccSequence);
 
+
+    }
+
+    public void slow(float time){
+        isSlow=true;
+        setAttack(2);
+        stopAllActions();
+        switch (getState()){
+            case MOVE:
+                move();
+                break;
+            case ATTACK:
+                attack();
+                break;
+            default:
+                break;
+        }
 
     }
 
@@ -192,6 +263,34 @@ public class Zombie extends CCSprite {
             case ATTACK:
                 attack();
                 break;
+            default:
+                break;
         }
+
+    }
+
+    public void noemal(float t){
+        ccc3(255,255,255);
+        isSlow = false;
+        setAttack(10);
+        stopAllActions();
+        switch (getState()) {
+            case MOVE:
+                move();
+                break;
+            case ATTACK:
+                attack();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public boolean isSlow() {
+        return isSlow;
+    }
+
+    public void setSlow(boolean slow) {
+        isSlow = slow;
     }
 }
