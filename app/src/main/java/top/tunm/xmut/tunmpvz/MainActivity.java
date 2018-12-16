@@ -9,6 +9,9 @@ import android.view.WindowManager;
 import org.cocos2d.layers.CCScene;
 import org.cocos2d.nodes.CCDirector;
 import org.cocos2d.opengl.CCGLSurfaceView;
+import org.cocos2d.sound.SoundEngine;
+
+import top.tunm.xmut.tunmpvz.layer.LogoLayer;
 
 public class MainActivity extends Activity {
     private CCDirector ccDirector;
@@ -30,18 +33,21 @@ public class MainActivity extends Activity {
         CCScene ccScene= CCScene.node();
         ccScene.addChild(new LogoLayer());
         ccDirector.runWithScene(ccScene);
+        ToolsSet.preloadSound();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         ccDirector.onPause();
+        SoundEngine.sharedEngine().pauseSound();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         ccDirector.onResume();
+        SoundEngine.sharedEngine().resumeSound();
     }
 
     @Override
