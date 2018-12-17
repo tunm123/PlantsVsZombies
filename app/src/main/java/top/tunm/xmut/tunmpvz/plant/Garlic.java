@@ -57,8 +57,12 @@ public class Garlic extends Plant {
         zombie.move(intentPoint,intentEnd);
 
         AEffect aEffect = new AEffect("eff/wocao/eff%02d.png", 4,0.6f,0.15f);
-        aEffect.setPosition(ccp(zombie.getPosition().x, zombie.getPosition().y+50));
+        aEffect.setPosition(ccp(zombie.getPosition().x - 20, zombie.getPosition().y+50));
         getParent().addChild(aEffect, 6);
+
+        AEffect aEffect2 = new AEffect("eff/du2/eff%02d.png", 14,1f,0.074f);
+        aEffect2.setPosition(ccp(getPosition().x, getPosition().y - 20));
+        getParent().addChild(aEffect2, 6);
 
         CCDelayTime ccDelayTime = CCDelayTime.action(6);
         CCCallFunc ccCallFunc = CCCallFunc.action(this,"setSmell");
