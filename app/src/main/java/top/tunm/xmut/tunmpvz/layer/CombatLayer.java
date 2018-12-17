@@ -41,6 +41,7 @@ import top.tunm.xmut.tunmpvz.bullet.Sun;
 import top.tunm.xmut.tunmpvz.ToolsSet;
 import top.tunm.xmut.tunmpvz.card.PlantCard;
 import top.tunm.xmut.tunmpvz.effect.AEffect;
+import top.tunm.xmut.tunmpvz.plant.CabbagePult;
 import top.tunm.xmut.tunmpvz.plant.CherryBomb;
 import top.tunm.xmut.tunmpvz.plant.Chomper;
 import top.tunm.xmut.tunmpvz.plant.DoomShroom;
@@ -94,7 +95,7 @@ public class CombatLayer extends CCLayer {
     private int currentSunNuber = 5000;
     private ArrayList<Sun> suns;
     private AEffect aEffect;
-    private int cards = 21;
+    private int cards = 22;
     private boolean isShovel;
     private CCSprite almanac;
     private CCSprite showPlan;
@@ -585,6 +586,9 @@ public class CombatLayer extends CCLayer {
                                         break;
                                     case 20:
                                         selectPlant = new Garlic();
+                                        break;
+                                    case 21:
+                                        selectPlant = new CabbagePult();
                                         break;
                                     default:
                                         break;
@@ -1119,6 +1123,9 @@ public class CombatLayer extends CCLayer {
                     break;
                 case 20:
                     price = 50;
+                    break;
+                case 21:
+                    price = 100;
                     break;
                 default:
                     break;
