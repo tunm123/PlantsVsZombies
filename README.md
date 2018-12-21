@@ -1,6 +1,10 @@
 # TUNMPVZ
 植物大战僵尸安卓版 cocos2d-Android
 # 植物大战僵尸
+
+！[avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/S81219-093500.jpg)
+！[avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/S81219-094517.jpg)
+
 ## 第一周
 
 ### 任务概述
