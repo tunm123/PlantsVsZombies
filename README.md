@@ -21,8 +21,8 @@
 - 在新增的界面下添加返回按钮。
 
 ### 项目运行截图
-![avatar](1-1.jpeg)
-![avatar](1-2.jpeg)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/1-1.jpeg)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/1-2.jpeg)
 
 --
 
@@ -41,8 +41,8 @@
 - 在CombatLayer中，为存放CombatLine的ArrayList设置Get函数，让其可以被其他类获取到。这样一来就可以获得到其他列上的资源。用其樱桃炸弹中，获取本行和其他行上的所有僵尸，再者使用勾股定理公式或者CGPoint自带的距离函数逐个计算距离，小于一定的范围内，便对僵尸造成伤害。
 - 火爆辣椒比樱桃炸弹来的容易些，不需要获取到其他行的资源，只需要对自身所在行的僵尸进行伤害即可。
 
-![avatar](2-1.jpeg)
-![avatar](2-2.jpeg)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/2-1.jpeg)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/2-2.jpeg)
 
 --
 
@@ -61,7 +61,7 @@
 - 土豆类也分为三个状态，分别为：破土前——破土后——爆炸，破土后的土豆雷就让第一个触碰到的僵尸引起爆炸，并且小范围伤害当前行上的僵尸。
 - 窝瓜也分为三个状态，分别为：等待——跳跃——砸人。敌人一旦靠近，窝瓜会跳跃（CCMove），然后砸向敌人。
 - 小推车能清理当前行上的所有僵尸，前提是有僵尸触碰到它了。
-![avatar](3-1.jpeg)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/3-1.jpeg)
 
 --
 ## 第四周
@@ -89,7 +89,7 @@
 - 小推车能清理当前行上的所有僵尸，前提是有僵尸触碰到它了。
 
 
-![avatar](4-1.jpeg)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/4-1.jpeg)
 
 --
 
@@ -117,8 +117,8 @@
 - 游戏背景音乐和音效采用SoundEngine作为播放引擎。游戏音效需要使用preloadEffect()函数进行预加载才可以正常播放，否则第一次播放音效会作为预加载而播放失败。
 - 橄榄球僵尸和读报僵尸均继承自原来Zombie类，加强了生命力和移动速度的僵尸。
 
-![avatar](5-1.jpeg)
-![avatar](5-2.jpeg)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/5-1.jpeg)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/5-2.jpeg)
 
 --
 
@@ -145,7 +145,7 @@
 - 新增白天黑夜模式的选择功能，主要是为了后续可能加入白天和黑夜两种游戏模式做准备。选择白天和黑夜会得到不同的UI画面和战斗环境画面，但是暂时没有做其他的功能逻辑处理。
 - 关卡进程进度条采用cocos2d自带的进度条类CCProgressTimer来进行设计和实现，当僵尸越来越多，进度条就越来越满。
 - 当击败关卡最后一个僵尸时，当前关卡后会赠送一张新的植物卡片，点击即可进去详细图鉴页面AlongAlanLayer，页面中可以选择进入下一关。
-![avatar](6-1.jpeg)
-![avatar](6-2.jpeg)
-![avatar](6-3.jpeg)
-![avatar](6-4.jpeg)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/6-1.jpeg)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/6-2.jpeg)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/6-3.jpeg)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/6-4.jpeg)
