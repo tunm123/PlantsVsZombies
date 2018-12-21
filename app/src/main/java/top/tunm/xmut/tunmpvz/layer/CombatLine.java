@@ -20,6 +20,7 @@ import org.cocos2d.types.util.CGPointUtil;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Random;
 
 import top.tunm.xmut.tunmpvz.R;
 import top.tunm.xmut.tunmpvz.ToolsSet;
@@ -27,13 +28,23 @@ import top.tunm.xmut.tunmpvz.bullet.Bullet;
 import top.tunm.xmut.tunmpvz.bullet.StarBullet;
 import top.tunm.xmut.tunmpvz.bullet.ThreeBullet;
 import top.tunm.xmut.tunmpvz.card.PlantCard;
+import top.tunm.xmut.tunmpvz.plant.CabbagePult;
+import top.tunm.xmut.tunmpvz.plant.Cactus;
 import top.tunm.xmut.tunmpvz.plant.CherryBomb;
 import top.tunm.xmut.tunmpvz.plant.Chomper;
 import top.tunm.xmut.tunmpvz.plant.DoomShroom;
+import top.tunm.xmut.tunmpvz.plant.Gaara;
 import top.tunm.xmut.tunmpvz.plant.Garlic;
 import top.tunm.xmut.tunmpvz.plant.Jalapeno;
+import top.tunm.xmut.tunmpvz.plant.Kahu;
+import top.tunm.xmut.tunmpvz.plant.Kakashi;
+import top.tunm.xmut.tunmpvz.plant.KernelPult;
+import top.tunm.xmut.tunmpvz.plant.MelonPult;
 import top.tunm.xmut.tunmpvz.plant.Plant;
+import top.tunm.xmut.tunmpvz.plant.Plantern;
 import top.tunm.xmut.tunmpvz.plant.PotatoMine;
+import top.tunm.xmut.tunmpvz.plant.RockLee;
+import top.tunm.xmut.tunmpvz.plant.Sasuke;
 import top.tunm.xmut.tunmpvz.plant.ShooterPlant;
 import top.tunm.xmut.tunmpvz.plant.Spikeweed;
 import top.tunm.xmut.tunmpvz.plant.Squash;
@@ -49,6 +60,7 @@ public class CombatLine {
     private SparseArray<Plant> plants;
     private ArrayList<Zombie> zombies;
     private ArrayList<ShooterPlant> shooterPlants;
+    private ArrayList<CCSprite> pitcherButllet;
     private ArrayList<CherryBomb> cherryBombs;
     private ArrayList<Jalapeno> jalapenos;
     private ArrayList<Chomper> chompers;
@@ -56,6 +68,15 @@ public class CombatLine {
     private ArrayList<Squash> squashes;
     private ArrayList<DoomShroom> doomShrooms;
     private ArrayList<StarFruit> starFruits;
+    private ArrayList<CabbagePult> cabbagePults;
+    private ArrayList<KernelPult> kernelPults;
+    private ArrayList<MelonPult> melonPults;
+    private ArrayList<Plantern> planterns;
+    private ArrayList<Kakashi> kakashis;
+    private ArrayList<Gaara> gaaras;
+    private ArrayList<RockLee> rockLees;
+    private ArrayList<Sasuke> sasukes;
+    private ArrayList<Kahu> kahus;
     private float range = 200;
     private int currt;
     private boolean newCardIsShow = false;
@@ -96,6 +117,7 @@ public class CombatLine {
         plants = new SparseArray<>();
         zombies = new ArrayList<>();
         shooterPlants = new ArrayList<>();
+        pitcherButllet = new ArrayList<>();
         cherryBombs = new ArrayList<>();
         jalapenos = new ArrayList<>();
         chompers = new ArrayList<>();
@@ -103,6 +125,15 @@ public class CombatLine {
         squashes = new ArrayList<>();
         doomShrooms = new ArrayList<>();
         starFruits = new ArrayList<>();
+        cabbagePults = new ArrayList<>();
+        kernelPults = new ArrayList<>();
+        melonPults = new ArrayList<>();
+        planterns = new ArrayList<>();
+        kakashis = new ArrayList<>();
+        gaaras = new ArrayList<>();
+        rockLees = new ArrayList<>();
+        sasukes = new ArrayList<>();
+        kahus = new ArrayList<>();
         ToolsSet.shooterPlansArrays.add(shooterPlants);
         ToolsSet.zombieArrays.add(zombies);
         CCScheduler.sharedScheduler().schedule("attackPlant", this, 1,
@@ -149,6 +180,38 @@ public class CombatLine {
 
         if (plant instanceof StarFruit) {
             starFruits.add((StarFruit) plant);
+        }
+
+        if (plant instanceof CabbagePult) {
+            cabbagePults.add((CabbagePult) plant);
+        }
+
+        if (plant instanceof KernelPult) {
+            kernelPults.add((KernelPult) plant);
+        }
+
+        if (plant instanceof MelonPult) {
+            melonPults.add((MelonPult) plant);
+        }
+
+        if (plant instanceof Plantern) {
+            planterns.add((Plantern) plant);
+        }
+
+        if (plant instanceof Kakashi) {
+            kakashis.add((Kakashi) plant);
+        }
+        if (plant instanceof Gaara) {
+            gaaras.add((Gaara) plant);
+        }
+        if (plant instanceof RockLee) {
+            rockLees.add((RockLee) plant);
+        }
+        if (plant instanceof Sasuke) {
+            sasukes.add((Sasuke) plant);
+        }
+        if (plant instanceof Kahu) {
+            kahus.add((Kahu) plant);
         }
     }
 
@@ -239,11 +302,11 @@ public class CombatLine {
                     }
 
                     // 碰到大蒜
-                    if (isContainPlant(col)){
+                    if (isContainPlant(col)) {
                         Plant plant = plants.get(col);
-                        if (plant instanceof Garlic){
-                            if (!((Garlic) plant).isSmelled() && !zombie.isSm() && !zombie.isSp()){
-                                ((Garlic) plant).smells(zombie,currt,col,zombies);
+                        if (plant instanceof Garlic) {
+                            if (!((Garlic) plant).isSmelled() && !zombie.isSm() && !zombie.isSp()) {
+                                ((Garlic) plant).smells(zombie, currt, col, zombies);
                             }
                         }
                     }
@@ -496,13 +559,15 @@ public class CombatLine {
             if (!shooterPlants.isEmpty()) {
                 for (Torchwood torchwood : torchwoods) {
                     for (ShooterPlant shooterPlant : shooterPlants) {
-                        for (Bullet bullet : shooterPlant.getBullets()) {
-                            float dis = getDisBetweenTwoUnit(torchwood.getPosition().x, torchwood.getPosition().y,
-                                    bullet.getPosition().x, bullet.getPosition().y) / 105;
-                            if (dis < 0.6) {
-                                System.out.println("diss : " + dis);
-                                if (!bullet.isFire()) {
-                                    bullet.fire();
+                        if (!(shooterPlant instanceof Cactus)) {
+                            for (Bullet bullet : shooterPlant.getBullets()) {
+                                float dis = getDisBetweenTwoUnit(torchwood.getPosition().x, torchwood.getPosition().y,
+                                        bullet.getPosition().x, bullet.getPosition().y) / 105;
+                                if (dis < 0.6) {
+                                    System.out.println("diss : " + dis);
+                                    if (!bullet.isFire()) {
+                                        bullet.fire();
+                                    }
                                 }
                             }
                         }
@@ -531,6 +596,7 @@ public class CombatLine {
             }
         }
 
+
         // 窝瓜砸人
         if (!squashes.isEmpty()) {
             if (!zombies.isEmpty()) {
@@ -558,21 +624,271 @@ public class CombatLine {
             }
         }
 
+        Zombie taget = null;
+        float tagetDis = 1000;
+        //卷心菜
+        if (!cabbagePults.isEmpty()) {
+            if (!zombies.isEmpty()) {
+                for (CabbagePult cabbagePult : cabbagePults) {
+                    if (!cabbagePult.isNoAttack()) {
+                        Iterator<Zombie> zombieIterator = zombies.iterator();
+                        taget = zombies.get(0);
+                        while (zombieIterator.hasNext()) {
+                            Zombie zombie = zombieIterator.next();
+                            float dis = CGPointUtil.distance(cabbagePult.getPosition(), zombie.getPosition());
+                            if (dis <= tagetDis) {
+                                tagetDis = dis;
+                                taget = zombie;
+                            }
+                        }
+                        if (tagetDis >= 150 && tagetDis <= 900 && taget.getPosition().x > cabbagePult.getPosition().x) {
+                            cabbagePult.ready(taget);
+                        }
+
+                    }
+                    if (cabbagePult.getHP() == 0) {
+                        cabbagePults.remove(cabbagePult);
+                    }
+                }
+            }
+        }
+
+        // 玉米投手
+        if (!kernelPults.isEmpty()) {
+            if (!zombies.isEmpty()) {
+                for (KernelPult kernelPult : kernelPults) {
+                    if (!kernelPult.isNoAttack()) {
+                        Iterator<Zombie> zombieIterator = zombies.iterator();
+                        taget = zombies.get(0);
+                        while (zombieIterator.hasNext()) {
+                            Zombie zombie = zombieIterator.next();
+                            float dis = CGPointUtil.distance(kernelPult.getPosition(), zombie.getPosition());
+                            if (dis <= tagetDis) {
+                                tagetDis = dis;
+                                taget = zombie;
+                            }
+                        }
+                        if (tagetDis >= 150 && tagetDis <= 900 && taget.getPosition().x > kernelPult.getPosition().x) {
+                            Random random = new Random();
+                            int i = random.nextInt(10);
+                            if (i <= 3) {
+                                kernelPult.setYellow(true);
+                                kernelPult.setBuPath("bullet/yellow.png");
+                            }
+                            kernelPult.ready(taget);
+                        }
+                    }
+                    if (kernelPult.getHP() == 0) {
+                        kernelPults.remove(kernelPult);
+                    }
+                }
+            }
+        }
+
+        // 西瓜投手
+        if (!melonPults.isEmpty()) {
+            if (!zombies.isEmpty()) {
+                for (MelonPult me : melonPults) {
+                    if (!me.isNoAttack()) {
+                        Iterator<Zombie> zombieIterator = zombies.iterator();
+                        while (zombieIterator.hasNext()) {
+                            Zombie zombie = zombieIterator.next();
+                            taget = zombies.get(0);
+                            float dis = CGPointUtil.distance(me.getPosition(), zombie.getPosition());
+                            if (dis <= tagetDis) {
+                                tagetDis = dis;
+                                taget = zombie;
+                            }
+                        }
+                        if (tagetDis >= 150 && tagetDis <= 900 && taget.getPosition().x > me.getPosition().x) {
+                            me.ready(taget);
+                        }
+                    }
+                    if (me.getHP() == 0) {
+                        melonPults.remove(me);
+                    }
+                }
+            }
+        }
+
+        // 强化路灯
+        if (!planterns.isEmpty()) {
+            if (!zombies.isEmpty()) {
+                for (Plantern plantern : planterns) {
+                    if (!plantern.isAtt()) {
+                        Iterator<Zombie> zombieIterator = zombies.iterator();
+                        while (zombieIterator.hasNext()) {
+                            Zombie zombie = zombieIterator.next();
+                            float dis = CGPointUtil.distance(plantern.getPosition(), zombie.getPosition());
+                            if (dis <= 300) {
+                                plantern.launch(zombies);
+                            }
+                        }
+                    }
+                    if (plantern.getHP() == 0) {
+                        planterns.remove(plantern);
+                    }
+                }
+            }
+        }
+
+        // 旗木五五开
+        if (!kakashis.isEmpty()) {
+            if (!zombies.isEmpty()) {
+                for (Kakashi kakashi : kakashis) {
+                    Iterator<Zombie> zombieIterator = zombies.iterator();
+                    while (zombieIterator.hasNext()) {
+                        Zombie zombie = zombieIterator.next();
+                        float dis = CGPointUtil.distance(kakashi.getPosition(), zombie.getPosition());
+                        if (dis <= 700) {
+                            if (dis <= tagetDis) {
+                                tagetDis = dis;
+                                taget = zombie;
+                            }
+                            kakashis.remove(kakashi);
+                            kakashi.start(taget,zombies);
+                            plants.remove(kakashi.getCurrerCol());
+                        }
+
+                    }
+                    if (kakashi.getHP() == 0) {
+                        kakashis.remove(kakashi);
+                    }
+                }
+            }
+        }
+
+        // 我爱罗
+        if (!gaaras.isEmpty()) {
+            if (!zombies.isEmpty()) {
+                for (Gaara gaara : gaaras) {
+                    Iterator<Zombie> zombieIterator = zombies.iterator();
+                    while (zombieIterator.hasNext()) {
+                        Zombie zombie = zombieIterator.next();
+                        float dis = CGPointUtil.distance(gaara.getPosition(), zombie.getPosition());
+                        if (dis <= 700) {
+                            if (dis <= tagetDis) {
+                                tagetDis = dis;
+                                taget = zombie;
+                            }
+                            gaaras.remove(gaara);
+                            gaara.start(taget);
+                            plants.remove(gaara.getCurrerCol());
+                        }
+
+                    }
+                    if (gaara.getHP() == 0) {
+                        kakashis.remove(gaara);
+                    }
+                }
+            }
+        }
+
+        // 洛克李
+        if (!rockLees.isEmpty()) {
+            if (!zombies.isEmpty()) {
+                for (RockLee rockLee : rockLees) {
+                    Iterator<Zombie> zombieIterator = zombies.iterator();
+                    while (zombieIterator.hasNext()) {
+                        Zombie zombie = zombieIterator.next();
+                        float dis = CGPointUtil.distance(rockLee.getPosition(), zombie.getPosition());
+                        if (dis <= 700) {
+                            if (dis <= tagetDis) {
+                                tagetDis = dis;
+                                taget = zombie;
+                            }
+                            rockLees.remove(rockLee);
+                            rockLee.start(taget);
+                            plants.remove(rockLee.getCurrerCol());
+                        }
+                    }
+                    if (rockLee.getHP() == 0) {
+                        kakashis.remove(rockLee);
+                    }
+                }
+            }
+        }
+
+        // 佐助
+        if (!sasukes.isEmpty()) {
+            if (!zombies.isEmpty()) {
+                for (Sasuke hero : sasukes) {
+                    Iterator<Zombie> zombieIterator = zombies.iterator();
+                    while (zombieIterator.hasNext()) {
+                        Zombie zombie = zombieIterator.next();
+                        float dis = CGPointUtil.distance(hero.getPosition(), zombie.getPosition());
+                        if (dis <= 500) {
+                            if (dis <= tagetDis) {
+                                tagetDis = dis;
+                                taget = zombie;
+                            }
+                            hero.start(zombies);
+                            sasukes.remove(hero);
+                            plants.remove(hero.getCurrerCol());
+                        }
+                    }
+                    if (hero.getHP() == 0) {
+                        sasukes.remove(hero);
+                    }
+                }
+            }
+        }
+
+        // 扉间
+        if (!kahus.isEmpty()) {
+            if (!zombies.isEmpty()) {
+                for (Kahu hero : kahus) {
+                    Iterator<Zombie> zombieIterator = zombies.iterator();
+                    while (zombieIterator.hasNext()) {
+                        Zombie zombie = zombieIterator.next();
+                        float dis = CGPointUtil.distance(hero.getPosition(), zombie.getPosition());
+                        if (dis <= 400) {
+                            if (dis <= tagetDis) {
+                                tagetDis = dis;
+                                taget = zombie;
+                            }
+                            hero.start(zombie,zombies);
+                            kahus.remove(hero);
+                            plants.remove(hero.getCurrerCol());
+                        }
+                    }
+                    if (hero.getHP() == 0) {
+                        kahus.remove(hero);
+                    }
+                }
+            }
+        }
+
         // 清理僵尸
         if (!zombies.isEmpty()) {
             Iterator<Zombie> iterator = zombies.iterator();
             while (iterator.hasNext()) {
                 Zombie zombie = iterator.next();
                 if (zombie.getHP() == 0) {
-                    iterator.remove();
                     ToolsSet.currtCombatLayer.getZombies().remove(zombie);
+                    iterator.remove();
                 }
             }
         }
 
-        if (ToolsSet.currtCombatLayer.getLastZombie() != null) {
+        // 清理僵尸
+        if (!ToolsSet.currtCombatLayer.getZombies().isEmpty()) {
+            Iterator<Zombie> iterator = zombies.iterator();
+            while (iterator.hasNext()) {
+                Zombie zombie = iterator.next();
+                if (zombie.getHP() == 0) {
+//                    ToolsSet.currtCombatLayer.getZombies().remove(zombie);
+                    iterator.remove();
+                }
+            }
+        }
+//
+//        System.out.println("僵尸进度："+ToolsSet.currtCombatLayer.getZombiesAll()+"/"+ToolsSet.currtCombatLayer.getCheckPoint().getZombiesCount());
+//        System.out.println("僵尸数量："+ToolsSet.currtCombatLayer.getZombies().size());
+        if (ToolsSet.currtCombatLayer.getZombiesAll()>=ToolsSet.currtCombatLayer.getCheckPoint().getZombiesCount()) {
+            System.out.println("僵尸安放完毕");
 //            System.out.println("出现最后一只");
-            if (ToolsSet.currtCombatLayer.getLastZombie().getHP() == 0) {
+            if (ToolsSet.currtCombatLayer.getZombies().size() == 1) {
 //                System.out.println("最后一只僵尸凉了");
 //                ToolsSet.currtCombatLayer.next();
                 if (!ToolsSet.currtCombatLayer.isNewCardShow()) {
@@ -680,7 +996,10 @@ public class CombatLine {
                             starBullet.getPosition().x, starBullet.getPosition().y));
 //                    if (getDisBetweenTwoUnit(zombie.getPosition().x,zombie.getPosition().y,
 //                            starBullet.getPosition().x,starBullet.getPosition().y)<=25) {
-                    if (CGRect.containsPoint(zombie.getBoundingBox(),starBullet.getPosition()) && zombie.getHP()!=0) {
+//                    if (getDisBetweenTwoUnit(zombie.getPosition().x, zombie.getPosition().y,
+//                            starBullet.getPosition().x, starBullet.getPosition().y)<=50
+//                            && zombie.getHP() != 0) {
+                    if (CGRect.containsPoint(zombie.getBoundingBox(), starBullet.getPosition()) && zombie.getHP() != 0) {
                         starBullet.showBulletBlast(zombie);
                         starBullet.setVisible(false);
                         zombie.hurtCompute(starBullet.getAttack());
@@ -759,5 +1078,9 @@ public class CombatLine {
                 Math.pow(x1 - x2, 2) +
                         Math.pow(y1 - y2, 2));
         return dis;
+    }
+
+    public void setPlants(SparseArray<Plant> plants) {
+        this.plants = plants;
     }
 }

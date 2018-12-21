@@ -32,6 +32,7 @@ public class PoleVaultingZombie extends Zombie{
     private boolean isJump;
     private CGPoint cgPoint;
     private Plant plant;
+    private int temp;
 
     public PoleVaultingZombie(CombatLayer combatLayer, CGPoint start, CGPoint end) {
         super(combatLayer, start, end);
@@ -41,15 +42,19 @@ public class PoleVaultingZombie extends Zombie{
         setAttacka(ToolsSet.poleVaultingZombieAttack);
         setHP(400);
         setAttack(15);
-        setSpeed(40);
+        setSpeed(25);
         setNoAttack(true);
         setSp(true);
         move();
+        setNoHurt(true);
     }
 
     public void jump(CGPoint cgPoint, Plant plant){
         this.plant = plant;
         this.cgPoint = cgPoint;
+        setNoHurt(false);
+        temp = getHP();
+        setHP(100000);
         setSp(false);
         isJump = true;
         if (getHP()!=0){
@@ -77,6 +82,7 @@ public class PoleVaultingZombie extends Zombie{
     }
 
     public void jumped(){
+        setHP(temp);
         System.out.println("jumped");
         // 占坑。后面可能会用到判断高的坚果墙
         ArrayList<CCSpriteFrame> frames = new ArrayList<>();
@@ -95,8 +101,7 @@ public class PoleVaultingZombie extends Zombie{
         if (!(plant instanceof TallNut)){
             setPosition(cgPoint);
         }
-        setSpeed(20);
-
+        setSpeed(15);
         move();
         setNoAttack(false);
     }

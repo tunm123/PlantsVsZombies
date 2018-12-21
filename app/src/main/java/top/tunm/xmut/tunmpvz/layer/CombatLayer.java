@@ -12,6 +12,7 @@ import org.cocos2d.actions.interval.CCAnimate;
 import org.cocos2d.actions.interval.CCDelayTime;
 import org.cocos2d.actions.interval.CCMoveBy;
 import org.cocos2d.actions.interval.CCMoveTo;
+import org.cocos2d.actions.interval.CCRotateBy;
 import org.cocos2d.actions.interval.CCSequence;
 import org.cocos2d.layers.CCLayer;
 import org.cocos2d.layers.CCScene;
@@ -42,16 +43,25 @@ import top.tunm.xmut.tunmpvz.ToolsSet;
 import top.tunm.xmut.tunmpvz.card.PlantCard;
 import top.tunm.xmut.tunmpvz.effect.AEffect;
 import top.tunm.xmut.tunmpvz.plant.CabbagePult;
+import top.tunm.xmut.tunmpvz.plant.Cactus;
 import top.tunm.xmut.tunmpvz.plant.CherryBomb;
 import top.tunm.xmut.tunmpvz.plant.Chomper;
 import top.tunm.xmut.tunmpvz.plant.DoomShroom;
+import top.tunm.xmut.tunmpvz.plant.Gaara;
 import top.tunm.xmut.tunmpvz.plant.Garlic;
 import top.tunm.xmut.tunmpvz.plant.GatlingPea;
 import top.tunm.xmut.tunmpvz.plant.Jalapeno;
+import top.tunm.xmut.tunmpvz.plant.Kahu;
+import top.tunm.xmut.tunmpvz.plant.Kakashi;
+import top.tunm.xmut.tunmpvz.plant.KernelPult;
+import top.tunm.xmut.tunmpvz.plant.MelonPult;
 import top.tunm.xmut.tunmpvz.plant.Peashooter;
 import top.tunm.xmut.tunmpvz.plant.Plant;
+import top.tunm.xmut.tunmpvz.plant.Plantern;
 import top.tunm.xmut.tunmpvz.plant.PotatoMine;
 import top.tunm.xmut.tunmpvz.plant.Repeater;
+import top.tunm.xmut.tunmpvz.plant.RockLee;
+import top.tunm.xmut.tunmpvz.plant.Sasuke;
 import top.tunm.xmut.tunmpvz.plant.SnowPea;
 import top.tunm.xmut.tunmpvz.plant.Spikerock;
 import top.tunm.xmut.tunmpvz.plant.Spikeweed;
@@ -65,6 +75,7 @@ import top.tunm.xmut.tunmpvz.plant.Torchwood;
 import top.tunm.xmut.tunmpvz.plant.TwinSunflower;
 import top.tunm.xmut.tunmpvz.plant.WallNut;
 import top.tunm.xmut.tunmpvz.zombies.FootballZombie;
+import top.tunm.xmut.tunmpvz.zombies.JokerZombie;
 import top.tunm.xmut.tunmpvz.zombies.NewspaperZombie;
 import top.tunm.xmut.tunmpvz.zombies.PoleVaultingZombie;
 import top.tunm.xmut.tunmpvz.zombies.Zombie;
@@ -92,10 +103,10 @@ public class CombatLayer extends CCLayer {
     private ArrayList<CombatLine> combatLines;
     private ArrayList<CGPoint> cgPoints_path;
     private Random random;
-    private int currentSunNuber = 5000;
+    private int currentSunNuber = 9999;
     private ArrayList<Sun> suns;
     private AEffect aEffect;
-    private int cards = 22;
+    private int cards = 27;
     private boolean isShovel;
     private CCSprite almanac;
     private CCSprite showPlan;
@@ -116,6 +127,8 @@ public class CombatLayer extends CCLayer {
     private CCSprite newCardLight;
     private CCSprite light;
     private ArrayList<Zombie> zombies;
+    private int help = 0;
+    private int helpMax = 4;
 //    private CCProgress
 
     public CombatLayer(CheckPoint checkPoint) {
@@ -126,9 +139,9 @@ public class CombatLayer extends CCLayer {
 
     private void loadMap() {
         ToolsSet.bgmSound(R.raw.bgmfight);
-        if (ToolsSet.isIsNight()){
+        if (ToolsSet.isIsNight()) {
             cctmxTiledMap = CCTMXTiledMap.tiledMap("combat/map2.tmx");
-        }else {
+        } else {
             cctmxTiledMap = CCTMXTiledMap.tiledMap("combat/map1.tmx");
         }
         addChild(cctmxTiledMap);
@@ -154,23 +167,37 @@ public class CombatLayer extends CCLayer {
             Random random = new Random();
             float range = random.nextFloat();
             int index = 0;
+            String path = ToolsSet.zombieStand;
+            int num = 2;
             // 概率
-            if (range > 0 && range <= range5){
+            if (range > 0 && range <= range5) {
                 index = 5;
-            }else if(range > range5 && range <= range4){
+                path = ToolsSet.footballZombieStand;
+                num = ToolsSet.footballZombieStandInt;
+            } else if (range > range5 && range <= range4) {
                 index = 4;
-            }else if(range > range4 && range <= range3){
+                path = ToolsSet.poleVaultingZombieStand;
+                num = ToolsSet.poleVaultingZombieStandInt;
+            } else if (range > range4 && range <= range3) {
                 index = 3;
-            }else if(range > range3 && range <= range2){
+                path = ToolsSet.newspaperZombieStandB;
+                num = ToolsSet.newspaperZombieStandBInt;
+            } else if (range > range3 && range <= range2) {
                 index = 2;
-            }else if(range > range2 && range <= range1){
+                path = ToolsSet.bucketheadZombieStand;
+                num = ToolsSet.bucketheadZombieStandInt;
+            } else if (range > range2 && range <= range1) {
                 index = 1;
-            }else if(range > range1 && range <= range0){
+                path = ToolsSet.coneheadZombieStand;
+                num = ToolsSet.coneheadZombieStandInt;
+            } else if (range > range1 && range <= range0) {
                 index = 0;
+                path = ToolsSet.zombieStand;
+                num = 2;
             }
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < num; i++) {
                 CCSpriteFrame ccSpriteFrame = CCSprite.sprite(String.format(Locale.CHINA,
-                        ToolsSet.cardPathZombie[index], i)).displayedFrame();
+                        path, i)).displayedFrame();
                 frames.add(ccSpriteFrame);
             }
             CCAnimation ccAnimation = CCAnimation.animationWithFrames(frames, 0.2f);
@@ -186,7 +213,7 @@ public class CombatLayer extends CCLayer {
         CCSequence ccSequence = CCSequence.actions(ccDelayTime, ccMoveBy, ccCallFunc);
         cctmxTiledMap.runAction(ccSequence);
 
-        zombiesAll = 0;
+        zombiesAll = 1;
         death = checkPoint.getZombiesCount();
         // 主菜单按钮
 
@@ -196,6 +223,8 @@ public class CombatLayer extends CCLayer {
         ToolsSet.zombieArrays = new ArrayList<>();
         zombies = new ArrayList<>();
 
+        help = 0;
+
     }
 
     public void loadChoose() {
@@ -204,7 +233,7 @@ public class CombatLayer extends CCLayer {
         ccSprite_SeedBank.setPosition(0, winSize.getHeight());
         addChild(ccSprite_SeedBank);
 
-        ccLabel = CCLabel.makeLabel(currentSunNuber+"", "", 20);
+        ccLabel = CCLabel.makeLabel(currentSunNuber + "", "", 20);
         ccLabel.setColor(ccColor3B.ccBLACK);
         ccLabel.setPosition(40, 695);
         addChild(ccLabel);
@@ -252,6 +281,32 @@ public class CombatLayer extends CCLayer {
         setIsTouchEnabled(true);
     }
 
+//
+//    // 应援卡片栏
+//    private CCSprite leftBox;
+//    private boolean leftBoxShow;
+//    private ArrayList<PlantCard> helpCard;
+//    public void setHelpCards(){
+//        helpCard = new ArrayList<>();
+//        leftBox = CCSprite.sprite("choose/LeftSeedBank08.png");
+//        leftBox.setAnchorPoint(0,1);
+//        leftBox.setPosition(0,winSize.getHeight() - 100);
+//        addChild(leftBox);
+//
+//        int bias = 100;
+//        for (int i = 0;i < 3;i++){
+//            PlantCard plantCard = new PlantCard(i,true);
+//            helpCard.add(plantCard);
+//            plantCard.getDark().setPosition((leftBox.getPosition().x + 10) , leftBox.getPosition().y+ i * bias);
+//            leftBox.addChild(plantCard.getDark());
+//            plantCard.getDark().setPosition((leftBox.getPosition().x + 10) , leftBox.getPosition().y+ i * bias);
+//            leftBox.addChild(plantCard.getLight());
+//
+//        }
+//
+//
+//    }
+
     public void setAlmanacCard() {
         almanac = CCSprite.sprite("choose/Almanac_PlantCard.png");
         almanac.setAnchorPoint(0, 1);
@@ -288,15 +343,17 @@ public class CombatLayer extends CCLayer {
         isShovel = false;
         shovelBack = CCSprite.sprite("choose/ShovelBack.png");
         shovelBack.setAnchorPoint(0, 1);
-        shovelBack.setPosition(450, winSize.getHeight());
+        shovelBack.setPosition(580, winSize.getHeight());
         addChild(shovelBack);
-        shovelBack.setScaleX(1.6f);
+        shovelBack.setScaleX(1.3f);
         shovelBack.setScaleY(2.4f);
 
         // 铲子
         shovel = CCSprite.sprite("choose/Shovel.png");
         shovel.setAnchorPoint(0, 1);
-        shovel.setPosition(470, winSize.getHeight() - 25);
+        shovel.setPosition(590, winSize.getHeight() - 55);
+        CCRotateBy ccRotateBy = CCRotateBy.action(0.01f, -45);
+        shovel.runAction(ccRotateBy);
         addChild(shovel);
 //        shovel.setScale(1);
 
@@ -308,6 +365,9 @@ public class CombatLayer extends CCLayer {
     private int pushID;
     private boolean flag = false;
     private CGPoint longPoint;
+
+
+    private boolean setClicked;
 
     @Override
     public boolean ccTouchesBegan(MotionEvent event) {
@@ -373,6 +433,130 @@ public class CombatLayer extends CCLayer {
                     runAction(ccSequence);
                 }
             }
+
+            // 阴影单位
+            if (!setClicked) {
+                if (selectPlant != null && selectCard != null) {
+                    setClicked = true;
+                    int col = (int) (cgPoint.x - 220) / 105;
+                    int row = (int) (cgPoint.y - 40) / 120;
+
+                    int colx = (int) (cgPoint.x - 220 - 10) / 105;
+                    int rowy = (int) (cgPoint.y - 40 - 50) / 120;
+
+                    if (col >= 0 && col < 9 && row >= 0 && row < 5) {
+                        CombatLine combatLine = combatLines.get(row);
+                        combatLine.setCurrt(row);
+                        if (!combatLine.isContainPlant(col)) {
+                            switch (selectCard.getId()) {
+                                case 0:
+                                    showadPlant = new Peashooter();
+                                    break;
+                                case 1:
+                                    showadPlant = new SunFlower();
+                                    break;
+                                case 2:
+                                    showadPlant = new CherryBomb();
+                                    break;
+                                case 3:
+                                    showadPlant = new WallNut();
+                                    break;
+                                case 4:
+                                    showadPlant = new PotatoMine();
+                                    break;
+                                case 5:
+                                    showadPlant = new SnowPea();
+                                    break;
+                                case 6:
+                                    showadPlant = new Chomper();
+                                    break;
+                                case 7:
+                                    showadPlant = new Repeater();
+                                    break;
+                                case 8:
+                                    showadPlant = new Torchwood();
+                                    break;
+                                case 9:
+                                    showadPlant = new Squash();
+                                    break;
+                                case 10:
+                                    showadPlant = new Jalapeno();
+                                    break;
+                                case 11:
+                                    showadPlant = new Threepeater();
+                                    break;
+                                case 12:
+                                    showadPlant = new GatlingPea();
+                                    break;
+                                case 13:
+                                    showadPlant = new TwinSunflower();
+                                    break;
+                                case 14:
+                                    showadPlant = new DoomShroom();
+                                    break;
+                                case 15:
+                                    showadPlant = new TallNut();
+                                    break;
+                                case 16:
+                                    showadPlant = new Spikeweed();
+                                    break;
+                                case 17:
+                                    showadPlant = new Spikerock();
+                                    break;
+                                case 18:
+                                    showadPlant = new StarFruit();
+                                    break;
+                                case 19:
+                                    showadPlant = new SplitPea();
+                                    break;
+                                case 20:
+                                    showadPlant = new Garlic();
+                                    break;
+                                case 21:
+                                    showadPlant = new CabbagePult();
+                                    break;
+                                case 22:
+                                    showadPlant = new KernelPult();
+                                    break;
+                                case 23:
+                                    showadPlant = new MelonPult();
+                                    break;
+                                case 24:
+                                    showadPlant = new Cactus();
+                                    break;
+                                case 25:
+                                    showadPlant = new Plantern();
+                                    break;
+                                case 26:
+                                    if (help == 0){
+                                        showadPlant = new Kakashi();
+                                    }else if (help == 1){
+                                        showadPlant = new Gaara();
+                                    }else if (help == 2) {
+                                        showadPlant = new RockLee();
+                                    }else if(help == 3){
+                                        showadPlant = new Sasuke();
+                                    }else if(help == 4){
+                                        showadPlant = new Kahu();
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if (showadPlant!=null) {
+                                showadPlant.setPosition(cgPoints_towers.get(row).get(col));
+                                showadPlant.setOpacity(130);
+                                cctmxTiledMap.addChild(showadPlant,6);
+                            }
+                            // 安置前影子
+                            colShowad.setOpacity(255);
+                            rowShowad.setOpacity(255);
+                            colShowad.setPosition(cgPoints_towers.get(row).get(col).x-100,winSize.getHeight()/2);
+                            rowShowad.setPosition(winSize.getWidth()/2,cgPoints_towers.get(row).get(col).y + 40);
+                        }
+                    }
+                }
+            }
         }
         return super.ccTouchesBegan(event);
     }
@@ -398,6 +582,10 @@ public class CombatLayer extends CCLayer {
     }
 
 
+    private Plant showadPlant;
+    private CCSprite rowShowad;
+    private CCSprite colShowad;
+
     // 移动改变图鉴
     @Override
     public boolean ccTouchesMoved(MotionEvent event) {
@@ -419,6 +607,44 @@ public class CombatLayer extends CCLayer {
                 }
             }
         }
+
+
+        if (setClicked) {
+            if (selectPlant != null && selectCard != null) {
+
+                int col = (int) (cgPoint.x - 220) / 105;
+                int row = (int) (cgPoint.y - 40) / 120;
+
+                int colx = (int) (cgPoint.x - 220 - 10) / 105;
+                int rowy = (int) (cgPoint.y - 40 - 50) / 120;
+
+                if (col >= 0 && col < 9 && row >= 0 && row < 5) {
+                    CombatLine combatLine = combatLines.get(row);
+                    combatLine.setCurrt(row);
+
+                    // 安置移动影子
+                    colShowad.setPosition(cgPoints_towers.get(row).get(col).x-100,winSize.getHeight()/2);
+                    rowShowad.setPosition(winSize.getWidth()/2,cgPoints_towers.get(row).get(col).y + 40);
+                    if (!combatLine.isContainPlant(col)) {
+                        if (showadPlant!=null) {
+                            showadPlant.setPosition(cgPoints_towers.get(row).get(col));
+                            showadPlant.setOpacity(130);
+                        }
+                        colShowad.setColor(ccc3(255,255,255));
+                        rowShowad.setColor(ccc3(255,255,255));
+                    }else {
+                        if (showadPlant!=null){
+                            showadPlant.setOpacity(0);
+
+                        }
+                        colShowad.setColor(ccColor3B.ccRED);
+                        rowShowad.setColor(ccColor3B.ccRED);
+                    }
+                }
+            }
+
+        }
+
         return super.ccTouchesMoved(event);
     }
 
@@ -449,6 +675,15 @@ public class CombatLayer extends CCLayer {
                     break;
                 case 15:
                     showPlan.setPosition(almanac.getPosition().x + 100, winSize.getHeight() - 70);
+                    break;
+                case 21:
+                    showPlan.setPosition(almanac.getPosition().x + 100, winSize.getHeight() - 90);
+                    break;
+                case 22:
+                    showPlan.setPosition(almanac.getPosition().x + 100, winSize.getHeight() - 50);
+                    break;
+                case 23:
+                    showPlan.setPosition(almanac.getPosition().x + 100, winSize.getHeight() - 42);
                     break;
                 default:
                     showPlan.setPosition(almanac.getPosition().x + 100, winSize.getHeight() - 130);
@@ -500,6 +735,17 @@ public class CombatLayer extends CCLayer {
         showText.runAction(ccHide);
         CGPoint cgPoint = convertTouchToNodeSpace(event);
 
+        // 影子不可见
+        if (showadPlant != null) {
+            showadPlant.removeSelf();
+            showadPlant = null;
+        }
+        if (colShowad!=null && rowShowad!=null){
+            colShowad.setOpacity(0);
+            rowShowad.setOpacity(0);
+        }
+
+        setClicked = false;
         // 暂停
         if (CGRect.containsPoint(mainMenu.getBoundingBox(), cgPoint)) {
             if (!isPause) {
@@ -519,7 +765,7 @@ public class CombatLayer extends CCLayer {
                     }
                     for (PlantCard plantCard : plantCards) {
                         if (CGRect.containsPoint(plantCard.getLight().getBoundingBox(), cgPoint)) {
-                            if (plantCard.getLight().getOpacity()==255) {
+                            if (plantCard.getLight().getOpacity() == 255) {
                                 selectCard = plantCard;
                                 selectCard.getLight().setOpacity(100);
                                 ToolsSet.effectSound(R.raw.click);
@@ -590,6 +836,35 @@ public class CombatLayer extends CCLayer {
                                     case 21:
                                         selectPlant = new CabbagePult();
                                         break;
+                                    case 22:
+                                        selectPlant = new KernelPult();
+                                        break;
+                                    case 23:
+                                        selectPlant = new MelonPult();
+                                        break;
+                                    case 24:
+                                        selectPlant = new Cactus();
+                                        break;
+                                    case 25:
+                                        selectPlant = new Plantern();
+                                        break;
+                                    case 26:
+                                        help++;
+                                        if(help>helpMax){
+                                            help=0;
+                                        }
+                                        if (help == 0){
+                                            selectPlant = new Kakashi();
+                                        }else if (help == 1){
+                                            selectPlant = new Gaara();
+                                        }else if (help == 2) {
+                                            selectPlant = new RockLee();
+                                        }else if(help == 3){
+                                            selectPlant = new Sasuke();
+                                        }else if(help == 4){
+                                            selectPlant = new Kahu();
+                                        }
+
                                     default:
                                         break;
                                 }
@@ -609,6 +884,8 @@ public class CombatLayer extends CCLayer {
                     CombatLine combatLine = combatLines.get(row);
                     combatLine.setCurrt(row);
                     if (!combatLine.isContainPlant(col)) {
+
+
 
                         // 安放植物
                         combatLine.addPlant(col, selectPlant);
@@ -650,6 +927,8 @@ public class CombatLayer extends CCLayer {
                     combatLine.setCurrt(row);
                     if (combatLine.isContainPlant(col)) {
                         Plant plant = combatLine.getPlants().get(col);
+                        plant.safe(combatLine.getZombies());
+                        plant.setHP(0);
                         combatLine.getPlants().remove(col);
                         plant.setRemove(true);
                         plant.removeSelf();
@@ -660,7 +939,6 @@ public class CombatLayer extends CCLayer {
                         System.out.println("这个区域可以铲除，植物具体位置为：" + plant.getCurrerCol());
                         isShovel = false;
                         ToolsSet.effectSound(R.raw.click);
-
 
 
                     }
@@ -693,7 +971,7 @@ public class CombatLayer extends CCLayer {
         } else {
             if (CGRect.containsPoint(ccSprite_SeedChoooser.getBoundingBox(),
                     cgPoint)) {
-                if (selectPlantCards.size() < 6) {
+                if (selectPlantCards.size() < 8) {
                     for (PlantCard plantCard : plantCards) {
                         if (CGRect.containsPoint(plantCard.getLight().getBoundingBox(), cgPoint)) {
                             if (!selectPlantCards.contains(plantCard)) {
@@ -701,7 +979,7 @@ public class CombatLayer extends CCLayer {
                                 CCMoveTo ccMoveTo = CCMoveTo.action(0.1f,
                                         ccp(50 + 60 * selectPlantCards.size(), 725));
                                 plantCard.getLight().runAction(ccMoveTo);
-                                if (selectPlantCards.size() == 6) {
+                                if (selectPlantCards.size() == 8) {
                                     ccSprite_SeedChooser_Button.setVisible(true);
                                 }
                             }
@@ -773,35 +1051,36 @@ public class CombatLayer extends CCLayer {
 
     ArrayList<CCSprite> ccSprites;
     private int tX = 0;
+
     // 安放小推车
-    public void createLawnMower(CombatLine combatLine,int i){
+    public void createLawnMower(CombatLine combatLine, int i) {
         CCSprite lawnMower = CCSprite.sprite("plant/LawnMower.png");
         lawnMower.setScale(1.5);
-        lawnMower.setPosition(i*5,i*((winSize.getHeight()-80)/5) + 80 );
+        lawnMower.setPosition(i * 5, i * ((winSize.getHeight() - 80) / 5) + 80);
         addChild(lawnMower);
         combatLine.setLawnMower(lawnMower);
         ccSprites.add(lawnMower);
         combatLine.setLawnMowerPoint(lawnMower.getPosition());
     }
 
-    public void lawnMowerAct(float t){
-        if (tX<5){
-            CCMoveTo ccMoveTo = CCMoveTo.action(0.5f,CGPoint.ccp(ccSprites.get(tX).getPosition().x+150,ccSprites.get(tX).getPosition().y));
+    public void lawnMowerAct(float t) {
+        if (tX < 5) {
+            CCMoveTo ccMoveTo = CCMoveTo.action(0.5f, CGPoint.ccp(ccSprites.get(tX).getPosition().x + 150, ccSprites.get(tX).getPosition().y));
             ccSprites.get(tX).runAction(ccMoveTo);
-        }else {
+        } else {
             CCScheduler.sharedScheduler().unschedule("lawnMowerAct", this);
         }
-        tX ++;
+        tX++;
     }
 
     public void start() {
         setIsTouchEnabled(true);
-        ccSprite_startReady.removeSelf();
         CCHide ccHide = CCHide.action();
         ccSprite_startReady.runAction(ccHide);
         setIsTouchEnabled(true);
         isStart = true;
 
+        ccSprite_startReady.removeSelf();
         // 推车出现
         CCScheduler.sharedScheduler().schedule("lawnMowerAct", this, 0.05f, false);
 
@@ -823,7 +1102,7 @@ public class CombatLayer extends CCLayer {
             CombatLine combatLine = new CombatLine();
             combatLine.setCurrt(i);
             combatLines.add(combatLine);
-            createLawnMower(combatLine,i);
+            createLawnMower(combatLine, i);
         }
 
         ToolsSet.setCombatLines(combatLines);
@@ -843,7 +1122,28 @@ public class CombatLayer extends CCLayer {
         startZombie();
 //        initBar();
         progress();
+
+
+        // 影子
+        rowShowad = CCSprite.sprite("choose/row.png");
+        CGPoint cgPoint = getCgPoints_towers().get(0).get(0);
+        rowShowad.setPosition(winSize.getWidth()/2,cgPoint.y);
+        addChild(rowShowad);
+
+        colShowad = CCSprite.sprite("choose/col.png");
+        colShowad.setPosition(cgPoint.x,winSize.getHeight()/2);
+        addChild(colShowad);
+
+        colShowad.setOpacity(0);
+        rowShowad.setOpacity(0);
+
+//        localC = CCSprite.sprite("choose/colWaring.png");
+//        localR = CCSprite.sprite("choose/rowWaring.png");
+//        setHelpCards();
     }
+
+    private CCSprite localC;
+    private CCSprite localR;
 
 
 
@@ -853,11 +1153,11 @@ public class CombatLayer extends CCLayer {
         CCCallFunc ccCallFunc = CCCallFunc.action(this, "startAddSun");
 
         // 僵尸
-        CCDelayTime ccDelayTime1 = CCDelayTime.action(10);
+        CCDelayTime ccDelayTime1 = CCDelayTime.action(60);
         CCCallFunc ccCallFunc1 = CCCallFunc.action(this, "startAddZombie1");
-        CCDelayTime ccDelayTime2 = CCDelayTime.action(30);
+        CCDelayTime ccDelayTime2 = CCDelayTime.action(80);
         CCCallFunc ccCallFunc2 = CCCallFunc.action(this, "startAddZombie2");
-        CCDelayTime ccDelayTime3 = CCDelayTime.action(50);
+        CCDelayTime ccDelayTime3 = CCDelayTime.action(100);
         CCCallFunc ccCallFunc3 = CCCallFunc.action(this, "startAddZombie3");
         CCSequence ccSequence = CCSequence.actions(ccDelayTime, ccCallFunc, ccDelayTime1, ccCallFunc1, ccDelayTime2,
                 ccCallFunc2, ccDelayTime3, ccCallFunc3);
@@ -917,10 +1217,8 @@ public class CombatLayer extends CCLayer {
     }
 
 
-
-
     public void addZombie(float t) {
-        if (zombiesAll<=checkPoint.getZombiesCount()) {
+        if (zombiesAll <= checkPoint.getZombiesCount()) {
             float range5 = checkPoint.getZombies5Rate();
             float range4 = checkPoint.getZombies5Rate() + checkPoint.getZombies4Rate();
             float range3 = checkPoint.getZombies5Rate() + checkPoint.getZombies4Rate() + checkPoint.getZombies3Rate();
@@ -940,13 +1238,20 @@ public class CombatLayer extends CCLayer {
                     zombie.setLast(true);
                 }
                 zombies.add(zombie);
+
+//                Zombie zombie1 = new JokerZombie(this, cgPoints_path.get(2 * i),
+//                        cgPoints_path.get(2 * i + 1));
+//                cctmxTiledMap.addChild(zombie1, 5 - i);
+//                combatLines.get(i).addZombie(zombie1);
+//                zombies.add(zombie1);
+
             }
             if (zombiesAll <= checkPoint.getZombiesCount()) {
                 int i = random.nextInt(5);
                 float range = random.nextFloat();
 
                 // 概率
-                if (range > 0 && range <= range5){
+                if (range > 0 && range <= range5) {
                     Zombie zombie = new FootballZombie(this, cgPoints_path.get(2 * i),
                             cgPoints_path.get(2 * i + 1));
                     cctmxTiledMap.addChild(zombie, 5 - i);
@@ -957,7 +1262,7 @@ public class CombatLayer extends CCLayer {
                         zombie.setLast(true);
                     }
                     zombies.add(zombie);
-                }else if (range > range5 && range <= range4) {
+                } else if (range > range5 && range <= range4) {
                     Zombie zombie = new PoleVaultingZombie(this, cgPoints_path.get(2 * i),
                             cgPoints_path.get(2 * i + 1));
                     cctmxTiledMap.addChild(zombie, 5 - i);
@@ -1018,7 +1323,7 @@ public class CombatLayer extends CCLayer {
             }
 //        setBar(zombiesAll);
             zombiesAll++;
-            progressTimer.setPercentage(zombiesAll*(100/checkPoint.getZombiesCount()));
+            progressTimer.setPercentage(zombiesAll * (100 / checkPoint.getZombiesCount()));
         }
 
     }
@@ -1127,6 +1432,27 @@ public class CombatLayer extends CCLayer {
                 case 21:
                     price = 100;
                     break;
+                case 22:
+                    price = 100;
+                    break;
+                case 23:
+                    price = 300;
+                    break;
+                case 24:
+                    price = 120;
+                    break;
+                case 25:
+                    price = 120;
+                    break;
+                case 26:
+                    price = 20;
+                    break;
+                case 27:
+                    price = 20;
+                    break;
+                case 28:
+                    price = 20;
+                    break;
                 default:
                     break;
             }
@@ -1142,15 +1468,15 @@ public class CombatLayer extends CCLayer {
     // 新 - 进度条
     private CCProgressTimer progressTimer;
 
-    private void progress(){
+    private void progress() {
         CCSprite back = CCSprite.sprite("interface/FlagMeterEmpty.png");
         addChild(back);
-        back.setPosition(winSize.getWidth()-380,winSize.getHeight()-20);
+        back.setPosition(winSize.getWidth() - 380, winSize.getHeight() - 20);
         back.setScaleX(2.5f);
         back.setScaleY(1.5f);
 
         progressTimer = CCProgressTimer.progressWithFile("interface/FlagMeterFull1.png");
-        progressTimer.setPosition(winSize.getWidth()-380,winSize.getHeight()-20);
+        progressTimer.setPosition(winSize.getWidth() - 380, winSize.getHeight() - 20);
         addChild(progressTimer);
         progressTimer.setScaleX(2.5f);
         progressTimer.setScaleY(1.5f);
@@ -1158,14 +1484,14 @@ public class CombatLayer extends CCLayer {
         progressTimer.setType(CCProgressTimer.kCCProgressTimerTypeHorizontalBarLR);
 
         CCSprite sprite = CCSprite.sprite("interface/FlagMeterEmpty1.png");
-        sprite.setPosition(winSize.getWidth()-380,winSize.getHeight()-20);
+        sprite.setPosition(winSize.getWidth() - 380, winSize.getHeight() - 20);
         addChild(sprite);
         sprite.setScaleX(2.5f);
         sprite.setScaleY(1.5f);
 
         CCSprite name = CCSprite.sprite("interface/FlagMeterLevelProgress.png");
         addChild(name);
-        name.setPosition(winSize.getWidth()-380,winSize.getHeight()-35);
+        name.setPosition(winSize.getWidth() - 380, winSize.getHeight() - 35);
         name.setScale(1.6f);
     }
 
@@ -1181,50 +1507,50 @@ public class CombatLayer extends CCLayer {
     private float zombieHeadStep;
     private float countStep;
 
-    public void initBar(){
+    public void initBar() {
         myBar = CCSprite.sprite(ToolsSet.bars[0]);
         barY = 35;
-        myBar.setPosition(winSize.getWidth()-myBar.getTextureRect().size.width-100,barY);
+        myBar.setPosition(winSize.getWidth() - myBar.getTextureRect().size.width - 100, barY);
         myBar.setScale(1.6);
         addChild(myBar);
 
-        flgPoint = CGPoint.ccp(myBar.getPosition().x-myBar.getTextureRect().size.width/2 - 35 ,barY+20);
+        flgPoint = CGPoint.ccp(myBar.getPosition().x - myBar.getTextureRect().size.width / 2 - 35, barY + 20);
         myHeadFlag = CCSprite.sprite("interface/FlagMeterParts2.png");
         myHeadFlag.setPosition(flgPoint);
         addChild(myHeadFlag);
 
-        startPoint = CGPoint.ccp(myBar.getPosition().x + myBar.getTextureRect().size.width/2 + 35 , barY + 25);
+        startPoint = CGPoint.ccp(myBar.getPosition().x + myBar.getTextureRect().size.width / 2 + 35, barY + 25);
         zombieHead = CCSprite.sprite("interface/FlagMeterParts1.png");
         zombieHead.setPosition(startPoint);
         addChild(zombieHead);
 
         currtBar = 0;
-        zombieHeadStep = (myBar.getTextureRect().size.width + 70)/13;
+        zombieHeadStep = (myBar.getTextureRect().size.width + 70) / 13;
 
-        countStep = checkPoint.getZombiesCount()/ToolsSet.bars.length;
+        countStep = checkPoint.getZombiesCount() / ToolsSet.bars.length;
 
         CCSprite label = CCSprite.sprite("interface/FlagMeterLevelProgress.png");
-        label.setPosition(myBar.getPosition().x,myBar.getPosition().y-25);
+        label.setPosition(myBar.getPosition().x, myBar.getPosition().y - 25);
         addChild(label);
         label.setScale(1.6);
 
     }
 
-    public void setBar(int currZombieCount){
-        if (currZombieCount>=currtBar * countStep && currtBar<=11){
+    public void setBar(int currZombieCount) {
+        if (currZombieCount >= currtBar * countStep && currtBar <= 11) {
             currtBar++;
             CGPoint point = myBar.getPosition();
 
 
-            zombieHead.setPosition(zombieHead.getPosition().x - zombieHeadStep,zombieHead.getPosition().y);
+            zombieHead.setPosition(zombieHead.getPosition().x - zombieHeadStep, zombieHead.getPosition().y);
 
             myBar.removeSelf();
             myBar = CCSprite.sprite(ToolsSet.bars[currtBar]);
             myBar.setPosition(point);
             addChild(myBar);
             myBar.setScale(1.6f);
-            System.out.println("段数："+currtBar);
-            System.out.println("段字:"+ToolsSet.bars[currtBar]);
+            System.out.println("段数：" + currtBar);
+            System.out.println("段字:" + ToolsSet.bars[currtBar]);
         }
 
     }
@@ -1315,6 +1641,22 @@ public class CombatLayer extends CCLayer {
 
     public void setCgPoints_path(ArrayList<CGPoint> cgPoints_path) {
         this.cgPoints_path = cgPoints_path;
+    }
+
+    public ArrayList<CombatLine> getCombatLines() {
+        return combatLines;
+    }
+
+    public void setCombatLines(ArrayList<CombatLine> combatLines) {
+        this.combatLines = combatLines;
+    }
+
+    public int getZombiesAll() {
+        return zombiesAll;
+    }
+
+    public void setZombiesAll(int zombiesAll) {
+        this.zombiesAll = zombiesAll;
     }
 }
 

@@ -22,7 +22,7 @@ public class TwinSunflower extends Plant {
         super("plant/TwinSunflower/Frame%02d.png", 20);
         CCScheduler.sharedScheduler().schedule("createSun",this,10,false);
         CCScheduler.sharedScheduler().schedule("createSun",this,10.1f,false);
-        setPrice(50);
+        setPrice(150);
 
     }
 

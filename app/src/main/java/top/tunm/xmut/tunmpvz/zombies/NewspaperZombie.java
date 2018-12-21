@@ -37,7 +37,7 @@ public class NewspaperZombie extends Zombie {
         setAttacka(ToolsSet.newspaperZombieAttackB);
         setHP(500);
         setAttack(15);
-        setSpeed(20);
+        setSpeed(15);
         move();
     }
 
@@ -65,6 +65,8 @@ public class NewspaperZombie extends Zombie {
                 CCAnimate ccAnimate= CCAnimate.action(ccAnimation,true);
                 CCRepeatForever ccRepeatForever= CCRepeatForever.action(ccAnimate);
                 runAction(ccRepeatForever);
+
+                setSpeed(15);
 
                 CCDelayTime ccDelayTime = CCDelayTime.action(1);
                 CCCallFunc ccCallFunc = CCCallFunc.action(this,"move");

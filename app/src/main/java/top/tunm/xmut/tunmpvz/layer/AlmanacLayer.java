@@ -37,7 +37,7 @@ public class AlmanacLayer extends CCLayer {
     private PlantCard selectCard;
     private ArrayList<PlantCard> plantCards;
     private ArrayList<PlantCard> selectPlantCards;
-    private int cards = 21;
+    private int cards = 27;
     private CCSprite almanac;
     private CCSprite showPlan;
     private ArrayList<CCSpriteFrame> showFrame;
@@ -191,6 +191,16 @@ public class AlmanacLayer extends CCLayer {
                 break;
             case 15:
                 showPlan.setPosition(almanac.getPosition().x + 100, winSize.getHeight() - 90);
+                break;
+            case 21:
+                // 卷心菜
+                showPlan.setPosition(almanac.getPosition().x + 100, winSize.getHeight() - 90);
+                break;
+            case 22:
+                showPlan.setPosition(almanac.getPosition().x + 100, winSize.getHeight() - 50);
+                break;
+            case 23:
+                showPlan.setPosition(almanac.getPosition().x + 100, winSize.getHeight() - 42);
                 break;
             default:
                 showPlan.setPosition(almanac.getPosition().x + 100, winSize.getHeight() - 130);

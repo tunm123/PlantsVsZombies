@@ -5,6 +5,7 @@ import org.cocos2d.actions.interval.CCAnimate;
 import org.cocos2d.nodes.CCAnimation;
 import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.nodes.CCSpriteFrame;
+import org.cocos2d.types.CGPoint;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -54,6 +55,14 @@ public class Plant extends CCSprite {
         HP -= hurt;
         if (HP<0){
             HP=0;
+        }
+    }
+
+    public void safe(ArrayList<Zombie> zombies){
+        for (Zombie zombie:zombies){
+            if (CGPoint.ccpDistance(zombie.getPosition(),getPosition())<=40){
+                zombie.move();
+            }
         }
     }
 

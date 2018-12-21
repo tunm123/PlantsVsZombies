@@ -32,7 +32,7 @@ public class FootballZombie extends Zombie{
         setAttacka(ToolsSet.footballZombieAttackA);
         setHP(600);
         setAttack(10);
-        setSpeed(45);
+        setSpeed(30);
         move();
     }
 
@@ -49,7 +49,8 @@ public class FootballZombie extends Zombie{
                 setMove(ToolsSet.footballZombieMoveB);
                 setAttackInt(ToolsSet.footballZombieAttackIntB);
                 setAttacka(ToolsSet.footballZombieAttackB);
-
+                setSpeed(15);
+                move();
             }
         }
     }

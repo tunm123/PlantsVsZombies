@@ -78,11 +78,12 @@ public class StarBullet extends CCSprite{
         AEffect aEffect = new AEffect("eff/star/eff%02d.png", 5,0.6f,0.12f);
         aEffect.setPosition(ccp(zombie.getPosition().x, zombie.getPosition().y-40));
         getParent().addChild(aEffect, 6);
+        ToolsSet.effectSound(R.raw.bomb1);
         CCDelayTime ccDelayTime = CCDelayTime.action(0.8f);
         CCHide ccHide = CCHide.action();
         CCSequence ccSequence = CCSequence.actions(ccDelayTime, ccHide);
         aEffect.runAction(ccSequence);
-        ToolsSet.effectSound(R.raw.bomb1);
+
     }
 
     public int getSpeed() {

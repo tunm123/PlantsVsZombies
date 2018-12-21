@@ -66,6 +66,7 @@ public class CherryBomb extends Plant{
         AEffect aEffect = new AEffect("eff/bomb/Frame%02d.png" , 5);
         aEffect.setPosition(ccp(getPosition().x,getPosition().y-20));
         getParent().addChild(aEffect,6);
+        aEffect.setScale(1.6f);
         ToolsSet.effectSound(R.raw.bomb);
         removeSelf();
     }

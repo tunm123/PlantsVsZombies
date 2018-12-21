@@ -95,21 +95,25 @@ public class ToolsSet {
     // 僵尸的路径存放
 
     // 基本僵尸 100
-    public static String zombieStand = "zombies/zombies_1/walk/Frame00.png";
+    public static String zombieStand = "zombies/zombies_1/walk/Frame%02d.png";
+    public static String zombieStands = "zombies/zombies_1/walk/Frame00.png";
+    public static int zombiStandInt = 22;
     public static String zombieMove = "zombies/zombies_1/walk/Frame%02d.png";
     public static int zombieMoveInt = 22;
     public static String zombieAttack = "zombies/zombies_1/attack/Frame%02d.png";
     public static int zombieAttackInt = 21;
 
     // 水桶僵尸 400
-    public static String bucketheadZombieStand = "zombies/zombies_1/BucketheadZombie/Frame00.png";
+    public static String bucketheadZombieStand = "zombies/zombies_1/BucketheadZombie/stand%02d.png";
+    public static int bucketheadZombieStandInt = 6;
     public static String bucketheadZombieMove = "zombies/zombies_1/BucketheadZombie/Frame%02d.png";
     public static int bucketheadZombieInt = 15;
     public static String bucketheadZombieAttack = "zombies/zombies_1/BucketheadZombieAttack/Frame%02d.png";
     public static int bucketheadZombieAttackInt = 11;
 
     // 路障僵尸 200 coneheadZombie
-    public static String coneheadZombieStand = "zombies/zombies_1/ConeheadZombie/Frame00.png";
+    public static String coneheadZombieStand = "zombies/zombies_1/ConeheadZombie/Frame%02d.png";
+    public static int coneheadZombieStandInt = 8;
     public static String coneheadZombieMove = "zombies/zombies_1/ConeheadZombie/Frame%02d.png";
     public static int coneheadZombieInt = 21;
     public static String coneheadZombieAttack = "zombies/zombies_1/ConeheadZombieAttack/Frame%02d.png";
@@ -117,7 +121,8 @@ public class ToolsSet {
 
 
     // 旗帜僵尸 190 flagZombie
-    public static String flagZombieStand = "zombies/zombies_1/FlagZombie/Frame00.png";
+    public static String flagZombieStand = "zombies/zombies_1/FlagZombie/Frame%02d.png";
+    public static int flagZombieStandInt = 12;
     public static String flagZombieMove = "zombies/zombies_1/FlagZombie/Frame%02d.png";
     public static int flagZombieInt = 12;
     public static String flagZombieAttack = "zombies/zombies_1/FlagZombieAttack/Frame%02d.png";
@@ -125,7 +130,8 @@ public class ToolsSet {
 
 
     // 读报僵尸-读报模式 500
-    public static String newspaperZombieStandB = "zombies/zombies_1/NewspaperZombie/walkb00.png";
+    public static String newspaperZombieStandB = "zombies/zombies_1/NewspaperZombie/stand%02d.png";
+    public  static int newspaperZombieStandBInt = 19;
     public static String newspaperZombieMoveB = "zombies/zombies_1/NewspaperZombie/walkb%02d.png";
     public static int newspaperZombieIntB = 19;
     public static String newspaperZombieAttackB = "zombies/zombies_1/NewspaperZombie/attackb%02d.png";
@@ -140,7 +146,8 @@ public class ToolsSet {
 
 
     // 撑杆跳僵尸 400
-    public static String poleVaultingZombieStand = "zombies/zombies_1/PoleVaultingZombie/walka00.png";
+    public static String poleVaultingZombieStand = "zombies/zombies_1/PoleVaultingZombie/stand%02d.png";
+    public static int poleVaultingZombieStandInt = 9;
     public static String poleVaultingZombieMoveA = "zombies/zombies_1/PoleVaultingZombie/walka%02d.png";
     public static int poleVaultingZombieIntA = 10;
     public static String poleVaultingZombieMoveB = "zombies/zombies_1/PoleVaultingZombie/walk%02d.png";
@@ -149,7 +156,8 @@ public class ToolsSet {
     public static int poleVaultingZombieAttackInt = 14;
 
     // 橄榄球僵尸 600
-    public static String footballZombieStand = "zombies/zombies_1/FootballZombie/stand00.png";
+    public static String footballZombieStand = "zombies/zombies_1/FootballZombie/stand%02d.png";
+    public static int footballZombieStandInt = 15;
     public static String footballZombieMoveA = "zombies/zombies_1/FootballZombie/walka%02d.png";
     public static int footballZombieIntA = 11;
     public static String footballZombieMoveB = "zombies/zombies_1/FootballZombie/walkb%02d.png";
@@ -159,6 +167,12 @@ public class ToolsSet {
     public static String footballZombieAttackB = "zombies/zombies_1/FootballZombie/attackb%02d.png";
     public static int footballZombieAttackIntB = 11;
 
+    // 小丑僵尸
+    public static String jokerZombieStadn = "zombies/zombies_1/JokerZombie/stand00.png";
+    public static String jokerZombieMove = "zombies/zombies_1/JokerZombie/walk%02d.png";
+    public static int jokerZombieInt = 8;
+    public static String jokerZombieAttack = "zombies/zombies_1/JokerZombie/attack%02d.png";
+    public static int jokerZombieAttackInt = 7;
 
 
     // 设置植物卡片图鉴效果
@@ -183,7 +197,13 @@ public class ToolsSet {
             "plant/Spikerock/Frame%02d.png",
             "plant/Starfruit/Frame%02d.png",
             "plant/SplitPea/Frame%02d.png",
-            "plant/Garlic/Frame%02d.png"
+            "plant/Garlic/Frame%02d.png",
+            "plant/CabbagePult/Frame%02d.png",
+            "plant/KernelPult/Frame%02d.png",
+            "plant/MelonPult/Frame%02d.png",
+            "plant/Cactus/Frame%02d.png",
+            "plant/Plantern/Frame%02d.png",
+            "plant/en%02d.png",
     };
 
     public static int[] cardInt = {
@@ -207,7 +227,13 @@ public class ToolsSet {
             8,
             13,
             14,
-            12
+            12,
+            18,
+            9,
+            9,
+            11,
+            19,
+            1
     };
 
     public static String[] cardPathZombie = {
@@ -230,7 +256,7 @@ public class ToolsSet {
     public static String[] name = {
         "豌豆射手","向阳花","樱桃炸弹","坚果墙","土豆雷","寒冰射手","食人花","双枪射杀","火炬树桩"
             ,"窝瓜","火爆辣椒","三管射手","机枪射手","双生向阳花","毁灭蘑菇","巨型坚果墙","地刺",
-            "地刺王","杨桃","精分射手","大蒜"
+            "地刺王","杨桃","精分射手","大蒜","卷心菜投手","玉米投手","西瓜投手","仙人掌","强化路灯","应援卡"
     };
 //
 //    public static String[] text1 = {

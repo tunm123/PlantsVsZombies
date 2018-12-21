@@ -4,6 +4,7 @@ import org.cocos2d.actions.base.CCRepeatForever;
 import org.cocos2d.actions.base.CCSpeed;
 import org.cocos2d.actions.instant.CCCallFunc;
 import org.cocos2d.actions.interval.CCAnimate;
+import org.cocos2d.actions.interval.CCBlink;
 import org.cocos2d.actions.interval.CCDelayTime;
 import org.cocos2d.actions.interval.CCMoveTo;
 import org.cocos2d.actions.interval.CCSequence;
@@ -27,12 +28,14 @@ import top.tunm.xmut.tunmpvz.effect.AEffect;
 
 public class Zombie extends CCSprite {
     private  CGPoint end;
+    private  CGPoint start;
     private final CombatLayer combatLayer;
-    private float speed=20;
+    private float speed=15;
     private int attack=10;
     private int HP=100;
     private State state;
     private boolean isSlow;
+    private boolean noHurt;
 
     private String stand = ToolsSet.zombieStand;
     private String move = ToolsSet.zombieMove;
@@ -64,24 +67,27 @@ public class Zombie extends CCSprite {
         MOVE,ATTACK
     }
     public Zombie (CombatLayer combatLayer, CGPoint start, CGPoint end) {
-        super(ToolsSet.zombieStand);
+        super(ToolsSet.zombieStands);
         setAnchorPoint(0.5f, 0);
         setPosition(start);
         this.combatLayer = combatLayer;
         this.end = end;
+        this.start = start;
         move();
     }
 
     public Zombie (CombatLayer combatLayer, CGPoint start, CGPoint end,int HP) {
-        super(ToolsSet.zombieStand);
+        super(ToolsSet.zombieStands);
         setAnchorPoint(0.5f, 0);
         setPosition(start);
         this.combatLayer = combatLayer;
         this.end = end;
+        this.start = start;
         // 水桶僵尸
         if (HP==600){
             isN = false;
             setHP(400);
+            setSpeed(15);
             move = ToolsSet.bucketheadZombieMove;
             attacka = ToolsSet.bucketheadZombieAttack;
             moveInt = ToolsSet.bucketheadZombieInt;
@@ -89,6 +95,7 @@ public class Zombie extends CCSprite {
         }else if(HP==300) {
             isN = false;
             setHP(200);
+            setSpeed(15);
             move = ToolsSet.coneheadZombieMove;
             attacka = ToolsSet.coneheadZombieAttack;
             moveInt = ToolsSet.coneheadZombieInt;
@@ -96,7 +103,7 @@ public class Zombie extends CCSprite {
         }else if(HP==190){
             isN = false;
             setHP(190);
-            setSpeed(30);
+            setSpeed(15);
             move = ToolsSet.flagZombieMove;
             attacka = ToolsSet.flagZombieAttack;
             moveInt = ToolsSet.flagZombieInt;
@@ -107,70 +114,21 @@ public class Zombie extends CCSprite {
 
 
     public void move(){
-        float t= CGPointUtil.distance(getPosition(),end)/speed;
-        CCMoveTo ccMoveTo= CCMoveTo.action(t,end);
-        CCCallFunc ccCallFunc= CCCallFunc.action(combatLayer,"end");
-        CCSequence ccSequence= CCSequence.actions(ccMoveTo,ccCallFunc);
-        if (isSlow){
-            CCSpeed ccSpeed=CCSpeed.action(ccSequence,0.2f);
-            runAction(ccSpeed);
-        }else {
-            runAction(ccSequence);
-        }
-        ArrayList<CCSpriteFrame> frames=new ArrayList<>();
-        for (int i = 0; i < moveInt; i++) {
-            CCSpriteFrame ccSpriteFrame= CCSprite.sprite(String.format(Locale.CHINA,
-                    move,i)).displayedFrame();
-            frames.add(ccSpriteFrame);
-        }
-        CCAnimation ccAnimation= CCAnimation.animationWithFrames(frames,0.1f);
-        CCAnimate ccAnimate= CCAnimate.action(ccAnimation,true);
-        CCRepeatForever ccRepeatForever= CCRepeatForever.action(ccAnimate);
-        if (isSlow){
-            CCSpeed ccSpeed=CCSpeed.action(ccRepeatForever,0.2f);
-            runAction(ccSpeed);
-        }else {
-            runAction(ccRepeatForever);
-        }
-        setState(State.MOVE);
-    }
-
-    // 特殊移动
-    public void move(CGPoint cgPoint,CGPoint end){
-        float t= 0.7f;
-        isSm = true;
-        this.end =end;
-        CCMoveTo ccMoveTo= CCMoveTo.action(t,cgPoint);
-        runAction(ccMoveTo);
-        ArrayList<CCSpriteFrame> frames=new ArrayList<>();
-        for (int i = 0; i < moveInt; i++) {
-            CCSpriteFrame ccSpriteFrame= CCSprite.sprite(String.format(Locale.CHINA,
-                    move,i)).displayedFrame();
-            frames.add(ccSpriteFrame);
-        }
-        CCAnimation ccAnimation= CCAnimation.animationWithFrames(frames,0.05f);
-        CCAnimate ccAnimate= CCAnimate.action(ccAnimation,true);
-        CCRepeatForever ccRepeatForever= CCRepeatForever.action(ccAnimate);
-        runAction(ccRepeatForever);
-        setState(State.MOVE);
-        CCDelayTime ccDelayTime = CCDelayTime.action(0.7f);
-        CCCallFunc ccCallFunc = CCCallFunc.action(this,"move");
-        CCDelayTime ccDelayTime1 = CCDelayTime.action(0.1f);
-        CCCallFunc ccCallFunc1 = CCCallFunc.action(this,"nosm");
-        CCSequence ccSequence = CCSequence.actions(ccDelayTime,ccCallFunc,ccDelayTime1,ccCallFunc1);
-        runAction(ccSequence);
-    }
-
-    public void nosm(){
-        isSm = false;
-    }
-
-    public void attack() {
-        if (!isNoAttack) {
+        if (!stop) {
+            float t = CGPointUtil.distance(getPosition(), end) / speed;
+            CCMoveTo ccMoveTo = CCMoveTo.action(t, end);
+            CCCallFunc ccCallFunc = CCCallFunc.action(combatLayer, "end");
+            CCSequence ccSequence = CCSequence.actions(ccMoveTo, ccCallFunc);
+            if (isSlow) {
+                CCSpeed ccSpeed = CCSpeed.action(ccSequence, 0.2f);
+                runAction(ccSpeed);
+            } else {
+                runAction(ccSequence);
+            }
             ArrayList<CCSpriteFrame> frames = new ArrayList<>();
-            for (int i = 0; i < attackInt; i++) {
+            for (int i = 0; i < moveInt; i++) {
                 CCSpriteFrame ccSpriteFrame = CCSprite.sprite(String.format(Locale.CHINA,
-                        attacka, i)).displayedFrame();
+                        move, i)).displayedFrame();
                 frames.add(ccSpriteFrame);
             }
             CCAnimation ccAnimation = CCAnimation.animationWithFrames(frames, 0.1f);
@@ -182,7 +140,62 @@ public class Zombie extends CCSprite {
             } else {
                 runAction(ccRepeatForever);
             }
-            setState(State.ATTACK);
+            setState(State.MOVE);
+        }
+    }
+
+    // 特殊移动
+    public void move(CGPoint cgPoint,CGPoint end){
+        if (!stop) {
+            float t = 0.7f;
+            isSm = true;
+            this.end = end;
+            CCMoveTo ccMoveTo = CCMoveTo.action(t, cgPoint);
+            runAction(ccMoveTo);
+            ArrayList<CCSpriteFrame> frames = new ArrayList<>();
+            for (int i = 0; i < moveInt; i++) {
+                CCSpriteFrame ccSpriteFrame = CCSprite.sprite(String.format(Locale.CHINA,
+                        move, i)).displayedFrame();
+                frames.add(ccSpriteFrame);
+            }
+            CCAnimation ccAnimation = CCAnimation.animationWithFrames(frames, 0.05f);
+            CCAnimate ccAnimate = CCAnimate.action(ccAnimation, true);
+            CCRepeatForever ccRepeatForever = CCRepeatForever.action(ccAnimate);
+            runAction(ccRepeatForever);
+            setState(State.MOVE);
+            CCDelayTime ccDelayTime = CCDelayTime.action(0.7f);
+            CCCallFunc ccCallFunc = CCCallFunc.action(this, "move");
+            CCDelayTime ccDelayTime1 = CCDelayTime.action(0.1f);
+            CCCallFunc ccCallFunc1 = CCCallFunc.action(this, "nosm");
+            CCSequence ccSequence = CCSequence.actions(ccDelayTime, ccCallFunc, ccDelayTime1, ccCallFunc1);
+            runAction(ccSequence);
+        }
+    }
+
+    public void nosm(){
+        isSm = false;
+    }
+
+    public void attack() {
+        if (!stop) {
+            if (!isNoAttack) {
+                ArrayList<CCSpriteFrame> frames = new ArrayList<>();
+                for (int i = 0; i < attackInt; i++) {
+                    CCSpriteFrame ccSpriteFrame = CCSprite.sprite(String.format(Locale.CHINA,
+                            attacka, i)).displayedFrame();
+                    frames.add(ccSpriteFrame);
+                }
+                CCAnimation ccAnimation = CCAnimation.animationWithFrames(frames, 0.1f);
+                CCAnimate ccAnimate = CCAnimate.action(ccAnimation, true);
+                CCRepeatForever ccRepeatForever = CCRepeatForever.action(ccAnimate);
+                if (isSlow) {
+                    CCSpeed ccSpeed = CCSpeed.action(ccRepeatForever, 0.2f);
+                    runAction(ccSpeed);
+                } else {
+                    runAction(ccRepeatForever);
+                }
+                setState(State.ATTACK);
+            }
         }
     }
 
@@ -212,7 +225,6 @@ public class Zombie extends CCSprite {
             default:
                 break;
         }
-
 //        switch (dieState){
 //            // 普通死法
 //            case 0:
@@ -253,6 +265,8 @@ public class Zombie extends CCSprite {
         if (HP<0){
             HP=0;
         }
+//        CCBlink ccBlink = CCBlink.action(0.3f,3);
+//        runAction(ccBlink);
 
         if (!isN){
             if (HP<=100){
@@ -263,6 +277,10 @@ public class Zombie extends CCSprite {
                 move();
             }
         }
+
+//        CCBlink ccBlink = CCBlink.action(0.3f,3);
+//        runAction(ccBlink);
+
 
     }
 
@@ -307,9 +325,57 @@ public class Zombie extends CCSprite {
 
     }
 
+    private boolean stop;
+    public void stop(String path,int xh){
+        int bias;
+        if (this instanceof NewspaperZombie){
+            bias = 20;
+        }else if(this instanceof PoleVaultingZombie){
+            bias = -40;
+        }else {
+            bias = -27;
+        }
+
+        if (noHurt){
+            return;
+        }
+
+        stop = true;
+        setAttack(0);
+        stopAllActions();
+        if(!"none".equals(path)) {
+            AEffect head = new AEffect(path,1,xh);
+            head.setPosition(getPosition().x + 10,getPosition().y + 60);
+            getParent().addChild(head,6);
+        }
+        CCDelayTime ccDelayTime = CCDelayTime.action(xh);
+        CCCallFunc ccCallFunc=CCCallFunc.action(this,"restart");
+        CCSequence ccSequence=CCSequence.actions(ccDelayTime,ccCallFunc);
+        runAction(ccSequence);
+
+        AEffect aEffect = new AEffect("eff/yun/battleBufferEffect1_100%02d.png" , 4,xh,0.1f);
+        aEffect.setPosition(ccp(getPosition().x,getPosition().y+80));
+        getParent().addChild(aEffect,6);
+    }
+
+    public void restart(){
+        stop = false;
+        stopAllActions();
+        switch (getState()) {
+            case MOVE:
+                move();
+                break;
+            case ATTACK:
+                attack();
+                break;
+            default:
+                break;
+        }
+    }
+
     public void noemal() {
         isSlow = false;
-        setAttack(10);
+        setAttack(attack);
         stopAllActions();
         switch (getState()) {
             case MOVE:
@@ -325,8 +391,8 @@ public class Zombie extends CCSprite {
     }
 
     public void noemal(float t){
-        ccc3(255,255,255);
         isSlow = false;
+        ccc3(255,255,255);
         setAttack(10);
         stopAllActions();
         switch (getState()) {
@@ -436,5 +502,33 @@ public class Zombie extends CCSprite {
 
     public void setSm(boolean sm) {
         isSm = sm;
+    }
+
+    public void setEnd(CGPoint end) {
+        this.end = end;
+    }
+
+    public CGPoint getStart() {
+        return start;
+    }
+
+    public void setStart(CGPoint start) {
+        this.start = start;
+    }
+
+    public boolean isStop() {
+        return stop;
+    }
+
+    public void setStop(boolean stop) {
+        this.stop = stop;
+    }
+
+    public boolean isNoHurt() {
+        return noHurt;
+    }
+
+    public void setNoHurt(boolean noHurt) {
+        this.noHurt = noHurt;
     }
 }

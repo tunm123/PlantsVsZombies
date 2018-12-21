@@ -121,6 +121,7 @@ public class PauseLayer extends CCLayer {
         System.out.println("回到主菜单");
         combatLayer.onEnter();
         combatLayer.end();
+        removeSelf();
     }
 
     public void comeBack(Object item){
