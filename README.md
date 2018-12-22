@@ -2,6 +2,10 @@
 植物大战僵尸安卓版 cocos2d-Android
 # 植物大战僵尸
 
+学院课程设计《android游戏开发》的期末作业项目。
+
+不会再更新了。
+
 ![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/S81221-231006.jpg)
 ![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/S81221-231011.jpg)
 
@@ -153,3 +157,12 @@
 ![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/6-2.jpeg)
 ![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/6-3.jpeg)
 ![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/6-4.jpeg)
+
+
+## 部分GIF截图
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/20.gif)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/22.gif)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/28.gif)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/29.gif)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/3.gif)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/6.gif)
