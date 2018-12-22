@@ -4,7 +4,7 @@
 
 学院课程设计《android游戏开发》的期末作业项目。
 
-不会再更新了。
+应该是不会继续更新了，有兴趣的可以继续拓展。
 
 ![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/S81221-231006.jpg)
 ![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/S81221-231011.jpg)
@@ -166,3 +166,11 @@
 ![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/29.gif)
 ![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/3.gif)
 ![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/6.gif)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/23.gif)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/25.gif)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/26.gif)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/27.gif)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/13.gif)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/14.gif)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/5.gif)
+![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/16.gif)
