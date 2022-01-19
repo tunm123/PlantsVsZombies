@@ -1,13 +1,13 @@
-# TUNMPVZ
-植物大战僵尸安卓版 cocos2d-Android
+# 项目说明
+植物大战僵尸安卓版Cocos2d-Android
 # 植物大战僵尸
 
-学院课程设计《android游戏开发》的期末作业项目。
-
-应该是不会继续更新了，有兴趣的可以继续拓展。
+大学时用来练手和学习的课设，最近整理了一下代码，主要是基于Android-Cocos2D框架进行开发的安卓游戏《植物大战僵尸》。主要是用于学习练手，所以没有严格遵循原版本进行开发。大部分植物和僵尸的功能都进行魔改，与原版差异较大。
 
 ![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/S81221-231006.jpg)
 ![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/S81221-231011.jpg)
+
+# 更新日志周报
 
 ## 第一周
 
@@ -174,3 +174,4 @@
 ![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/14.gif)
 ![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/5.gif)
 ![avatar](https://github.com/tunm123/TUNMPVZ/blob/master/img/16.gif)
+
