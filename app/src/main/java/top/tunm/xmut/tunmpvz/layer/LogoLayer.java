@@ -35,7 +35,7 @@ public class LogoLayer extends CCLayer {
     }
 
     private void logo1() {
-        CCSprite ccSprite_logo1= CCSprite.sprite("logo/logo1.png");
+        CCSprite ccSprite_logo1= CCSprite.sprite("logo/logo3.png");
         ccSprite_logo1.setAnchorPoint(0,0);
         addChild(ccSprite_logo1);
         CCDelayTime ccDelayTime= CCDelayTime.action(2);
